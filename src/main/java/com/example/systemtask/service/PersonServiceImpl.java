@@ -3,23 +3,25 @@ package com.example.systemtask.service;
 import com.example.systemtask.dto.PersonDTO;
 import com.example.systemtask.exception.PersonAlreadyRegistered;
 import com.example.systemtask.exception.PersonNotFoundExcepton;
-import com.example.systemtask.mapper.PersonMapperImpl;
+import com.example.systemtask.mapper.PersonMapper;
 import com.example.systemtask.model.Person;
 import com.example.systemtask.repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
-    private final PersonMapperImpl personMapper;
+    //private final PersonMapper personMapper;
 
-    public PersonServiceImpl(PersonRepository personRepository, PersonMapperImpl personMapper){
+    @Autowired
+    public PersonServiceImpl(PersonRepository personRepository){
         this.personRepository = personRepository;
-        this.personMapper = personMapper;
+        //this.personMapper = personMapper;
     }
 
     @Override
@@ -27,26 +29,28 @@ public class PersonServiceImpl implements PersonService {
 
         if(personRepository.findByEmail(personDTO.getEmail()).isEmpty()){ // проверить
 
-            Person person = new Person();
-            person = personMapper.toPerson(personDTO);
-            personRepository.save(person);
+//            Person person = new Person();
+//            person = personMapper.toPerson(personDTO);
+//            Person person = PersonMapper.INSTANCE.toPerson(personDTO);
+            System.out.println(PersonMapper.INSTANCE.toPerson(personDTO));
+            //personRepository.save(person);
         }else {
             throw new PersonAlreadyRegistered();
         }
     }
 
     @Override
-    public Person findPerson(String email) {
-        return personRepository.findByEmail(email).orElseThrow(PersonNotFoundExcepton::new);
+    public PersonDTO findPerson(String email) {
+        return PersonMapper.INSTANCE.toDto(personRepository.findByEmail(email).orElseThrow(PersonNotFoundExcepton::new));
     }
 
     @Override
-    public List<Person> showAll() {
-        return personRepository.findAll();
+    public List<PersonDTO> showAll() {
+        return personRepository.findAll().stream().map(PersonMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public void update(String email, Person personUpdate) {
+    public void update(String email, PersonDTO personUpdate) {
         Person person = personRepository.findByEmail(email).orElseThrow(PersonNotFoundExcepton::new);
 
         person.setEmail(personUpdate.getEmail());
@@ -54,7 +58,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void delete(Person person) {
-        personRepository.delete(person);
+    public void delete(PersonDTO personDTO) {
+        personRepository.delete(PersonMapper.INSTANCE.toPerson(personDTO));
     }
 }

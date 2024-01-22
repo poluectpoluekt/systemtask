@@ -10,11 +10,11 @@ public interface PersonService {
 
     void create(PersonDTO personDTO);
 
-    Person findPerson(String email);
+    PersonDTO findPerson(String email);
 
-    List<Person> showAll();
+    List<PersonDTO> showAll();
 
-    void update(String email, Person person);
+    void update(String email, PersonDTO personUpdate);
 
-    void delete(Person person);
+    void delete(PersonDTO personDTO);
 }

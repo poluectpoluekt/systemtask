@@ -9,36 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskMapper taskMapper;
+    //private final TaskMapper taskMapper;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper){
+    public TaskServiceImpl(TaskRepository taskRepository){
         this.taskRepository = taskRepository;
-        this.taskMapper = taskMapper;
+        //this.taskMapper = taskMapper;
     }
 
 
     @Override
     public void create(TaskDTO taskDTO) {
-        Task task = taskMapper.toTask(taskDTO);
+        //Task task = taskMapper.toTask(taskDTO);
+        Task task = TaskMapper.INSTANCE.toTask(taskDTO);
         taskRepository.save(task);
     }
 
     @Override
     public TaskDTO readTask(Long id) {
-        return taskMapper.toTaskDto(taskRepository.findById(id).orElseThrow(TaskNotFoundException::new));
+        return TaskMapper.INSTANCE.toTaskDto(taskRepository.findById(id).orElseThrow(TaskNotFoundException::new));
     }
 
 
     @Override
-    public void update(TaskDTO taskUpdate) {
+    public void update(TaskDTO taskUpdate) { //пересмотреть, укоротить
         Task task = taskRepository.findById(taskUpdate.getId()).orElseThrow(TaskNotFoundException::new);
 
         task.setTitle(taskUpdate.getTitle());
@@ -56,6 +56,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDTO> showAll() {
 
-        return taskRepository.findAll().stream().map(task -> taskMapper.toTaskDto(task)).collect(Collectors.toList());
+        return taskRepository.findAll().stream().map(TaskMapper.INSTANCE::toTaskDto).collect(Collectors.toList());
     }
 }
