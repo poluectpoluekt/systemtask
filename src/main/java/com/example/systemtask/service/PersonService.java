@@ -1,10 +1,8 @@
 package com.example.systemtask.service;
 
 import com.example.systemtask.dto.PersonDTO;
-import com.example.systemtask.model.Person;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PersonService {
 
@@ -14,7 +12,7 @@ public interface PersonService {
 
     List<PersonDTO> showAll();
 
-    void update(String email, PersonDTO personUpdate);
+    void editPerson(String email, PersonDTO personUpdate);
 
     void delete(PersonDTO personDTO);
 }

@@ -34,8 +34,9 @@ public class PersonController {
     }
 
     @PatchMapping("/update")
-    public void updatePerson(@RequestBody PersonDTO personDTO){
-        personService.update(personDTO.getEmail(), personDTO);
+    public void updatePerson(@RequestBody PersonDTO personDTO, @RequestParam String email){
+        //personService.update(personDTO.getEmail(), personDTO);
+        personService.editPerson(email, personDTO);
     }
 
     @DeleteMapping("/delete")

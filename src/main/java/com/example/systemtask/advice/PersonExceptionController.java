@@ -23,9 +23,9 @@ public class PersonExceptionController {
                 System.currentTimeMillis());
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
     @ExceptionHandler(PersonAlreadyRegistered.class)
-    private PersonErrorResponse userAlreadyRegistred(PersonNotFoundExcepton e){
+    private PersonErrorResponse userAlreadyRegistred(PersonAlreadyRegistered e){
         return new PersonErrorResponse("A user with this email address already exists",
                 System.currentTimeMillis());
     }

@@ -11,4 +11,10 @@ public class TaskErrorResponse {
 
     private String message;
     private long timestamp;
+
+    public TaskErrorResponse(String message, Long timestamp){
+        this.message = message;
+        this.timestamp = timestamp;
+    }
+
 }

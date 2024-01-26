@@ -8,20 +8,25 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Setter
-@Getter
 @NoArgsConstructor
 @Table(name = "Person")
 public class Person {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
+    @Getter
     private Long id;
 
     @Column(name = "email")
+    @Setter
+    @Getter
     private String email;
 
     @Column(name = "password")
+    @Setter
+    @Getter
     private String password;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)

@@ -19,7 +19,7 @@ public class TaskController {
         this.taskServiceImpl = taskServiceImpl;
     }
 
-    @PostMapping(name = "/create")
+    @PostMapping("/create")
     public void createTask(@RequestBody TaskDTO taskDTO){
 
         taskServiceImpl.create(taskDTO);
@@ -35,9 +35,9 @@ public class TaskController {
         return taskServiceImpl.readTask(id);
     }
 
-    @PatchMapping("/update")
+    @PatchMapping("/edit")
     public void updateTask(@RequestBody TaskDTO taskDTO){
-        taskServiceImpl.update(taskDTO);
+        taskServiceImpl.editTask(taskDTO);
     }
 
     @DeleteMapping("/delete")
